@@ -5,7 +5,7 @@ import DrawerComponent from "./Drawer";
 import { useRouter } from "next/router";
 const Navbar = () => {
   const router = useRouter();
-  console.log(router.pathname);
+  // console.log(router.pathname);
   return (
     <HStack width="100vw" height="70px">
       <Container>

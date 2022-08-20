@@ -3,7 +3,7 @@ import React from "react";
 
 const Lecture = ({ i }) => {
   const displayStatus = (s) => {
-    if (s === "existing") {
+    if (s === "Listed") {
       return <Badge colorScheme="green">قائمة</Badge>;
     }
     if (s === "unknown") {

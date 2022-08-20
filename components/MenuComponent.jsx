@@ -15,18 +15,21 @@ const MenuComponent = ({
   options = [],
   select,
   setSelect,
+  colorSchema,
+  w,
 }) => {
   return (
-    <Flex>
+    <>
       <Menu>
         <MenuButton
+          w={w}
           as={Button}
-          colorScheme="blue"
+          colorScheme={colorSchema}
           rightIcon={<ChevronDownIcon />}
         >
           {select ? select : title}
         </MenuButton>
-        <MenuList maxH="200px" overflowY="scroll">
+        <MenuList w={w} maxH="200px" overflowY="scroll">
           <MenuOptionGroup onChange={(value) => setSelect(value)}>
             {options.map((i, index) => {
               return (
@@ -38,7 +41,7 @@ const MenuComponent = ({
           </MenuOptionGroup>
         </MenuList>
       </Menu>
-    </Flex>
+    </>
   );
 };
 

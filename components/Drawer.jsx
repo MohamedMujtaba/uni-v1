@@ -15,9 +15,12 @@ import {
 import React from "react";
 import { DarkModeSwitch } from "./DarkModeSwitch";
 import Link from "next/link";
+import { deleteAllCookies } from "../utils/deleteCookies";
+import { useRouter } from "next/router";
 
 const DrawerComponent = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const router = useRouter();
   const btnRef = React.useRef();
 
   return (
@@ -50,10 +53,15 @@ const DrawerComponent = () => {
 
           <DrawerFooter>
             <DarkModeSwitch />
-            {/* <IconButton
-              onClick={() => (document.cookie = "year=")}
+            <IconButton
+              marginLeft=".5rem"
+              onClick={() => {
+                onClose();
+                deleteAllCookies();
+                router.push("/");
+              }}
               icon={<DeleteIcon />}
-            /> */}
+            />
           </DrawerFooter>
         </DrawerContent>
       </Drawer>

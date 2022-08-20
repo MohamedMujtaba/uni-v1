@@ -13,12 +13,9 @@ export default function Home() {
   const handleLocalStorage = () => {
     document.cookie = `year=${year}`;
     document.cookie = `major=${major}`;
-    const y = document.cookie.split("=")[1];
-    router.push({ pathname: `/timeline` });
+    router.push("/timeline");
   };
-  useEffect(() => {
-    console.log(document.cookie);
-  }, []);
+
   return (
     <Container HH={"80vh"}>
       <Flex
