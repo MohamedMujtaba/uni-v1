@@ -16,7 +16,7 @@ const MenuComponent = ({
   select,
   setSelect,
   colorSchema,
-  w,
+  w = "",
 }) => {
   return (
     <>

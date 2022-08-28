@@ -3,7 +3,7 @@ import React from "react";
 
 const Lecture = ({ i }) => {
   const displayStatus = (s) => {
-    if (s === "Listed") {
+    if (s === "listed") {
       return <Badge colorScheme="green">قائمة</Badge>;
     }
     if (s === "unknown") {
@@ -40,7 +40,7 @@ const Lecture = ({ i }) => {
       <Divider />
       <Flex w="90%" justifyContent="space-between" alignItems="center">
         {displayStatus(i.status)}
-        <Text>{i.hole}</Text>
+        <Text>{i.hall}</Text>
       </Flex>
     </Flex>
   );

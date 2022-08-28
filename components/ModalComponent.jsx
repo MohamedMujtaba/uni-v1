@@ -19,6 +19,8 @@ import {
   Flex,
   InputGroup,
   FormLabel,
+  Spinner,
+  useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useState } from "react";
@@ -32,7 +34,11 @@ const ModalComponent = ({ refresh }) => {
   const [dep, setDep] = useState("");
   const [year, setYear] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [loading, setLoading] = useState(false);
+  const toast = useToast();
+
   const handelSubmit = async () => {
+    setLoading(true);
     try {
       await axios.post("https://uni-api-v1.herokuapp.com/api/v1/lecture", {
         title,
@@ -42,9 +48,25 @@ const ModalComponent = ({ refresh }) => {
         dep,
         year,
       });
+      setLoading(false);
+
       onClose();
       refresh();
+      setTitle("");
+      setHall("");
+      setDate("");
+      setTime("");
+      setDep("");
+      setYear("");
     } catch (error) {
+      setLoading(false);
+      toast({
+        title: "Something went wrong",
+        description: error.response.data.meg,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
       console.log(error);
     }
   };
@@ -122,10 +144,15 @@ const ModalComponent = ({ refresh }) => {
           </ModalBody>
 
           <ModalFooter>
-            <IconButton
-              icon={<CheckIcon color="green.500" onClick={handelSubmit} />}
-              disabled={Val()}
-            />
+            {loading ? (
+              <Spinner />
+            ) : (
+              <IconButton
+                onClick={handelSubmit}
+                icon={<CheckIcon color="green.500" />}
+                disabled={Val()}
+              />
+            )}
           </ModalFooter>
         </ModalContent>
       </Modal>

@@ -1,5 +1,5 @@
 // import { Badge, Checkbox, Flex, IconButton } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Container from "../../components/Container";
 import {
   Table,
@@ -24,11 +24,18 @@ import {
   Checkbox,
   Flex,
   IconButton,
+  useToast,
+  Button,
+  Input,
+  InputGroup,
+  TagLabel,
+  FormLabel,
 } from "@chakra-ui/react";
 import MenuComponent from "../../components/MenuComponent";
-import { AddIcon, DragHandleIcon } from "@chakra-ui/icons";
+import { AddIcon, DeleteIcon, DragHandleIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import ModalComponent from "../../components/ModalComponent";
+import AlertDialogComponent from "../../components/AlertDialogComponent";
 const Index = () => {
   const [lectures, setLectures] = useState([]);
   const [title, setTitle] = useState("");
@@ -37,6 +44,10 @@ const Index = () => {
   const [time, setTime] = useState("");
   const [dep, setDep] = useState("");
   const [year, setYear] = useState("");
+  const [deleteArr, setDeleteArr] = useState([]);
+  const [s, setS] = useState(false);
+  const toast = useToast();
+
   const displayStatus = (s) => {
     if (s === "listed") {
       return <Badge colorScheme="green">قائمة</Badge>;
@@ -48,7 +59,16 @@ const Index = () => {
       return <Badge colorScheme="red">ملغية</Badge>;
     }
   };
-  const getData = async () => {
+  const t = () => {
+    toast({
+      title: "Something went wrong",
+      description: "We've created your account for you.",
+      status: "success",
+      duration: 9000,
+      isClosable: true,
+    });
+  };
+  const getData = useCallback(async () => {
     try {
       const res = await axios.get(
         `https://uni-api-v1.herokuapp.com/api/v1/lecture?title=${title}&hall=${hall}&date=${date}&time=${time}&dep=${dep}&year=${year}`
@@ -57,11 +77,52 @@ const Index = () => {
     } catch (error) {
       console.log(error);
     }
+  }, [date, dep, hall, time, title, year]);
+
+  const handleDelete = async () => {
+    try {
+      await axios.delete("https://uni-api-v1.herokuapp.com/api/v1/lecture", {
+        data: { arr: deleteArr },
+      });
+
+      toast({
+        title: "OK",
+        description: "Items/item has been deleted",
+        status: "success",
+      });
+      setDeleteArr([]);
+      getData();
+    } catch (error) {
+      console.log(error);
+      toast({
+        title: "Something went wrong",
+        description: "Items/item not deleted",
+        status: "error",
+      });
+    }
   };
+
   useEffect(() => {
     getData();
-    console.log(lectures);
-  }, [title, hall, date, time, dep, year]);
+  }, [getData]);
+  const handleS = () => {
+    let a = lectures.map((i) => i._id);
+    if (deleteArr.length !== a.length) {
+      setS(true);
+      setDeleteArr(a);
+    } else {
+      setS(false);
+      setDeleteArr([]);
+    }
+  };
+  useEffect(() => {
+    let a = lectures.map((i) => i._id);
+    if (deleteArr.length !== a.length) {
+      setS(false);
+    } else {
+      setS(true);
+    }
+  }, [deleteArr, lectures]);
   return (
     <Container HH="88vh">
       <Flex w="100%" height="100%" flexDirection="column">
@@ -73,7 +134,25 @@ const Index = () => {
         >
           <ModalComponent refresh={getData} />
           <Flex>
-            <Popover placement="auto-start">
+            {deleteArr.length !== 0 && (
+              <AlertDialogComponent
+                header="Delete selected?"
+                body={
+                  <>
+                    Are you sure you want to delete all
+                    <Badge mx={1} colorScheme="red">
+                      {deleteArr.length}
+                    </Badge>
+                    selected
+                  </>
+                }
+                isButton={false}
+                icon={<DeleteIcon />}
+                f={handleDelete}
+              />
+            )}
+
+            <Popover placement="auto-start" w={"auto"} maxW={["90vw", "40vw"]}>
               <PopoverTrigger>
                 {/* <Button>Trigger</Button> */}
                 <IconButton icon={<DragHandleIcon />} />
@@ -83,7 +162,7 @@ const Index = () => {
                 <PopoverCloseButton />
                 <PopoverHeader>Filters</PopoverHeader>
                 <PopoverBody>
-                  <Flex gap="1rem">
+                  <Flex gap="1rem" flexWrap={"wrap"} p={2}>
                     <MenuComponent
                       title="Department"
                       select={dep}
@@ -102,12 +181,37 @@ const Index = () => {
                     />
                     <MenuComponent
                       title="Year"
-                      w="40%"
                       select={year}
                       setSelect={setYear}
                       options={["", "021", "020", "019", "018", "017", "016"]}
                     />
                     <MenuComponent />
+                    <InputGroup flexDirection="column">
+                      <FormLabel>Date</FormLabel>
+                      <Input
+                        type="date"
+                        onChange={(e) => setDate(e.target.value)}
+                      />
+                    </InputGroup>
+                    <InputGroup flexDirection="column">
+                      <FormLabel>Time</FormLabel>
+                      <Input
+                        type="time"
+                        onChange={(e) => setTime(e.target.value)}
+                      />
+                    </InputGroup>
+                    <Flex>
+                      <Button
+                        onClick={() => {
+                          setDate("");
+                          setTime("");
+                          setDep("");
+                          setYear("");
+                        }}
+                      >
+                        Clear filters
+                      </Button>
+                    </Flex>
                   </Flex>
                 </PopoverBody>
               </PopoverContent>
@@ -116,17 +220,22 @@ const Index = () => {
         </Flex>
         <TableContainer
           w="100%"
-          h="90%"
+          // minH="90%"
           overflow="auto"
+          overflowY="auto"
           border="solid 1px"
           borderRadius="lg"
           borderColor="gray.200"
+          p={3}
+          _dark={{
+            borderColor: "whiteAlpha.300",
+          }}
         >
           <Table>
             <Thead>
               <Tr>
                 <Th w="100px">
-                  <Checkbox />
+                  <Checkbox isChecked={s} onChange={handleS} />
                 </Th>
                 <Th>Title</Th>
                 <Th>Department</Th>
@@ -141,7 +250,11 @@ const Index = () => {
                 return (
                   <Tr key={lecture._id}>
                     <Td>
-                      <Checkbox />
+                      <Check
+                        deleteArr={deleteArr}
+                        setDeleteArr={setDeleteArr}
+                        id={lecture._id}
+                      />
                     </Td>
                     <Td>{lecture.title}</Td>
                     <Td>{lecture.dep}</Td>
@@ -158,6 +271,28 @@ const Index = () => {
       </Flex>
     </Container>
   );
+};
+const Check = ({ deleteArr, setDeleteArr, id }) => {
+  const [is, setIs] = useState(false);
+  const handleChange = () => {
+    if (!deleteArr.includes(id)) {
+      // setIs(true);
+      setDeleteArr([...deleteArr, id]);
+    }
+    if (deleteArr.includes(id)) {
+      let arr = deleteArr.filter((i) => i !== id);
+      setDeleteArr(arr);
+      // setIs(false);
+    }
+  };
+  useEffect(() => {
+    if (deleteArr.includes(id)) {
+      setIs(true);
+    } else {
+      setIs(false);
+    }
+  }, [deleteArr, id]);
+  return <Checkbox isChecked={is} onChange={handleChange} />;
 };
 
 export default Index;
