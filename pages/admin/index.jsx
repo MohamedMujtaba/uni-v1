@@ -31,6 +31,7 @@ import {
   TagLabel,
   FormLabel,
   useDisclosure,
+  Text,
 } from "@chakra-ui/react";
 import MenuComponent from "../../components/MenuComponent";
 import {
@@ -155,13 +156,12 @@ const Index = () => {
               <AlertDialogComponent
                 header="Delete selected?"
                 body={
-                  <>
-                    Are you sure you want to delete all
+                  <Text>
+                    Are you sure you want to delete all selected
                     <Badge mx={1} colorScheme="red">
                       {deleteArr.length}
                     </Badge>
-                    selected
-                  </>
+                  </Text>
                 }
                 isButton={false}
                 icon={<DeleteIcon />}
