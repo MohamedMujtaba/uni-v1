@@ -1,5 +1,5 @@
 import { CheckIcon } from "@chakra-ui/icons";
-import { Button, Flex, Heading, IconButton } from "@chakra-ui/react";
+import { Button, Flex, Heading, IconButton, Spinner } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Container from "../components/Container";
@@ -10,6 +10,7 @@ export default function Home() {
   const router = useRouter();
   const [year, setYear] = useState("");
   const [major, setMajor] = useState("");
+  const [isDisabled, setIsDisabled] = useState(false);
   const handleLocalStorage = () => {
     document.cookie = `year=${year}`;
     document.cookie = `major=${major}`;
@@ -40,13 +41,15 @@ export default function Home() {
             select={major}
             setSelect={setMajor}
           />
-          {year && major && (
+          {year && major && !isDisabled && (
             <IconButton
+              disabled={isDisabled}
               colorScheme="teal"
               icon={<CheckIcon />}
               onClick={handleLocalStorage}
             />
           )}
+          {isDisabled && <Spinner />}
         </Flex>
       </Flex>
     </Container>
