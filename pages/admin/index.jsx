@@ -30,14 +30,22 @@ import {
   InputGroup,
   TagLabel,
   FormLabel,
+  useDisclosure,
 } from "@chakra-ui/react";
 import MenuComponent from "../../components/MenuComponent";
-import { AddIcon, DeleteIcon, DragHandleIcon } from "@chakra-ui/icons";
+import {
+  AddIcon,
+  DeleteIcon,
+  DragHandleIcon,
+  InfoIcon,
+} from "@chakra-ui/icons";
 import axios from "axios";
 import ModalComponent from "../../components/ModalComponent";
 import AlertDialogComponent from "../../components/AlertDialogComponent";
+import EditModal from "../../components/EditModal";
 const Index = () => {
   const [lectures, setLectures] = useState([]);
+  const [lecture, setLecture] = useState(null);
   const [title, setTitle] = useState("");
   const [hall, setHall] = useState("");
   const [date, setDate] = useState("");
@@ -46,6 +54,8 @@ const Index = () => {
   const [year, setYear] = useState("");
   const [deleteArr, setDeleteArr] = useState([]);
   const [s, setS] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const toast = useToast();
 
   const displayStatus = (s) => {
@@ -58,15 +68,6 @@ const Index = () => {
     if (s === "canceled") {
       return <Badge colorScheme="red">ملغية</Badge>;
     }
-  };
-  const t = () => {
-    toast({
-      title: "Something went wrong",
-      description: "We've created your account for you.",
-      status: "success",
-      duration: 9000,
-      isClosable: true,
-    });
   };
   const getData = useCallback(async () => {
     try {
@@ -123,6 +124,14 @@ const Index = () => {
       setS(true);
     }
   }, [deleteArr, lectures]);
+
+  useEffect(() => {
+    if (lecture) {
+      onOpen();
+    } else {
+      onClose();
+    }
+  }, [lecture, onClose, onOpen]);
   return (
     <Container HH="88vh">
       <Flex w="100%" height="100%" flexDirection="column">
@@ -133,6 +142,14 @@ const Index = () => {
           justifyContent="space-between"
         >
           <ModalComponent refresh={getData} />
+          <EditModal
+            refresh={getData}
+            onClose={onClose}
+            onOpen={onOpen}
+            isOpen={isOpen}
+            lecture={lecture}
+            setLecture={setLecture}
+          />
           <Flex>
             {deleteArr.length !== 0 && (
               <AlertDialogComponent
@@ -241,8 +258,8 @@ const Index = () => {
                 <Th>Department</Th>
                 <Th>Year</Th>
                 <Th>Date</Th>
-                <Th>Status</Th>
-                <Th>Actions</Th>
+                <Th textAlign="center">Status</Th>
+                <Th textAlign="center">Actions</Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -260,8 +277,15 @@ const Index = () => {
                     <Td>{lecture.dep}</Td>
                     <Td>{lecture.year}</Td>
                     <Td>{lecture.date}</Td>
-                    <Td>{displayStatus(lecture.status)}</Td>
-                    <Td>Actions</Td>
+                    <Td textAlign="center">{displayStatus(lecture.status)}</Td>
+                    <Td textAlign="center">
+                      <IconButton
+                        variant="ghost"
+                        size="sm"
+                        icon={<InfoIcon />}
+                        onClick={() => setLecture(lecture)}
+                      />
+                    </Td>
                   </Tr>
                 );
               })}

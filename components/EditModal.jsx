@@ -23,31 +23,69 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MenuComponent from "./MenuComponent";
 
-const ModalComponent = ({ refresh }) => {
+const EditModal = ({
+  refresh,
+  lecture,
+  setLecture,
+  onClose,
+  onOpen,
+  isOpen,
+}) => {
   const [title, setTitle] = useState("");
   const [hall, setHall] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [dep, setDep] = useState("");
   const [year, setYear] = useState("");
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
   const toast = useToast();
+
+  // FIXME:
+  // const getLecture = async () => {
+  //   try {
+  //     const res = await axios.get(
+  //       `https://uni-api-v1.herokuapp.com/api/v1/lecture/${id}`
+  //     );
+  //   } catch (error) {
+  //     toast({
+  //       title: "Something went wrong",
+  //       description: error.response.data.meg,
+  //       status: "error",
+  //       duration: 5000,
+  //       isClosable: true,
+  //     });
+  //     console.log(error);
+  //   }
+  // };
+  useEffect(() => {
+    setTitle(lecture?.title);
+    setHall(lecture?.hall);
+    setDate(lecture?.date);
+    setTime(lecture?.time);
+    setDep(lecture?.dep);
+    setYear(lecture?.year);
+    setStatus(lecture?.status);
+  }, [lecture]);
 
   const handelSubmit = async () => {
     setLoading(true);
     try {
-      await axios.post("https://uni-api-v1.herokuapp.com/api/v1/lecture", {
-        title,
-        hall,
-        date,
-        time,
-        dep,
-        year,
-      });
+      await axios.patch(
+        `https://uni-api-v1.herokuapp.com/api/v1/lecture/${lecture._id}`,
+        {
+          title,
+          hall,
+          date,
+          time,
+          dep,
+          year,
+          status,
+        }
+      );
       setLoading(false);
 
       onClose();
@@ -58,6 +96,8 @@ const ModalComponent = ({ refresh }) => {
       setTime("");
       setDep("");
       setYear("");
+      setStatus("");
+      setLecture(null);
     } catch (error) {
       setLoading(false);
       toast({
@@ -77,18 +117,24 @@ const ModalComponent = ({ refresh }) => {
       return false;
     }
   };
+  useEffect(() => {
+    if (!isOpen) {
+      setLecture(null);
+    }
+  }, [isOpen]);
   return (
     <>
-      <IconButton onClick={onOpen} icon={<AddIcon />} colorScheme="teal" />
+      {/* <IconButton onClick={onOpen} icon={<AddIcon />} colorScheme="teal" /> */}
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
-        <ModalContent >
+        <ModalContent>
           <ModalHeader>Add new lecture</ModalHeader>
           <ModalCloseButton />
           <ModalBody display="flex" gap=".5rem" flexDirection="column">
             <InputGroup flexDirection="column">
               <FormLabel>Lecture Title</FormLabel>
               <Input
+                value={title}
                 placeholder="Title"
                 type="text"
                 onChange={(e) => setTitle(e.target.value)}
@@ -97,6 +143,7 @@ const ModalComponent = ({ refresh }) => {
             <InputGroup flexDirection="column">
               <FormLabel>Lecture Hall</FormLabel>
               <Input
+                value={hall}
                 placeholder="Hall"
                 type="text"
                 onChange={(e) => setHall(e.target.value)}
@@ -106,6 +153,7 @@ const ModalComponent = ({ refresh }) => {
               <InputGroup flexDirection="column" w="60%">
                 <FormLabel>Date</FormLabel>
                 <Input
+                  value={date}
                   type="date"
                   placeholder="Date"
                   onChange={(e) => setDate(e.target.value)}
@@ -113,7 +161,11 @@ const ModalComponent = ({ refresh }) => {
               </InputGroup>
               <InputGroup flexDirection="column" w="40%">
                 <FormLabel>Time</FormLabel>
-                <Input type="time" onChange={(e) => setTime(e.target.value)} />
+                <Input
+                  value={time}
+                  type="time"
+                  onChange={(e) => setTime(e.target.value)}
+                />
               </InputGroup>
             </Flex>
             <Flex gap="1rem" marginTop=".5rem">
@@ -159,4 +211,4 @@ const ModalComponent = ({ refresh }) => {
     </>
   );
 };
-export default ModalComponent;
+export default EditModal;
