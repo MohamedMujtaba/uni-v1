@@ -171,7 +171,7 @@ const EditModal = ({
             <Flex gap="1rem" marginTop=".5rem">
               <MenuComponent
                 title="Department"
-                w="40%"
+                w="20%"
                 select={dep}
                 setSelect={setDep}
                 options={[
@@ -187,10 +187,17 @@ const EditModal = ({
               />
               <MenuComponent
                 title="Year"
-                w="40%"
+                w="30%"
                 select={year}
                 setSelect={setYear}
                 options={["021", "020", "019", "018", "017", "016"]}
+              />
+              <MenuComponent
+                title="status"
+                w="30%"
+                select={status}
+                setSelect={setStatus}
+                options={["listed", "unknown", "canceled"]}
               />
             </Flex>
           </ModalBody>
