@@ -74,19 +74,22 @@ const Day = () => {
 
     return (
       <Container>
-        <Flex w="100%" gap="1rem" wrap="wrap">
+        <Flex flexDirection="column" w="100%">
           <Flex
             w="100%"
             maxW="400px"
             alignItems="center"
             justifyContent="space-between"
+            marginBottom="4"
           >
             <Heading size="sm">{router.query["date"]}</Heading>
             <Heading size="sm">{getDayOfTheWeek(router.query["date"])}</Heading>
           </Flex>
-          {lectures.map((i) => {
-            return <Lecture i={i} key={i._id} />;
-          })}
+          <Flex w="100%" gap="1rem" wrap="wrap">
+            {lectures.map((i) => {
+              return <Lecture i={i} key={i._id} />;
+            })}
+          </Flex>
         </Flex>
       </Container>
     );
