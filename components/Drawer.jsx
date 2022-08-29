@@ -47,7 +47,9 @@ const DrawerComponent = () => {
               <span onClick={() => onClose()}>
                 <Link href="/timeline">Time Line</Link>
               </span>
-              <Link href="#">Announcement</Link>
+              <span onClick={() => onClose()}>
+                <Link href="/announcement">Announcement</Link>
+              </span>
             </Flex>
           </DrawerBody>
 

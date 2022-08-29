@@ -23,7 +23,19 @@ const Day = () => {
       dep: x[1],
     });
   }, []);
-
+  const getDayOfTheWeek = (date) => {
+    const d = new Date(date);
+    const weekday = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+    return weekday[d?.getDay()];
+  };
   useEffect(() => {
     const getData = async () => {
       try {
@@ -63,6 +75,15 @@ const Day = () => {
     return (
       <Container>
         <Flex w="100%" gap="1rem" wrap="wrap">
+          <Flex
+            w="100%"
+            maxW="400px"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <Heading size="sm">{router.query["date"]}</Heading>
+            <Heading size="sm">{getDayOfTheWeek(router.query["date"])}</Heading>
+          </Flex>
           {lectures.map((i) => {
             return <Lecture i={i} key={i._id} />;
           })}
