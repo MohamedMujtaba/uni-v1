@@ -1,10 +1,11 @@
-import { Flex, Heading, Spinner } from "@chakra-ui/react";
+import { Flex, Heading, IconButton, Spinner } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Container from "../../../components/Container";
 import Lecture from "../../../components/Lecture";
 import axios from "axios";
 import { useToast } from "@chakra-ui/react";
+import { ArrowBackIcon } from "@chakra-ui/icons";
 const Day = () => {
   const [params, setParams] = useState({ year: "", dep: "" });
   const router = useRouter();
@@ -69,7 +70,11 @@ const Day = () => {
     );
   } else {
     if (lectures.length === 0) {
-      return <Heading>No Lectures for now</Heading>;
+      return (
+        <Flex h="30vh" w="100%" alignItems="center" justifyContent="center">
+          <Heading size="lg">No Lectures for now</Heading>
+        </Flex>
+      );
     }
 
     return (
@@ -77,13 +82,18 @@ const Day = () => {
         <Flex flexDirection="column" w="100%">
           <Flex
             w="100%"
-            maxW="400px"
+            maxW="50vw"
             alignItems="center"
             justifyContent="space-between"
             marginBottom="4"
           >
+            <IconButton
+              variant="ghost"
+              icon={<ArrowBackIcon />}
+              onClick={() => router.back()}
+            />
             <Heading size="sm">{router.query["date"]}</Heading>
-            <Heading size="sm">{getDayOfTheWeek(router.query["date"])}</Heading>
+            {/* <Heading size="sm">{getDayOfTheWeek(router.query["date"])}</Heading> */}
           </Flex>
           <Flex w="100%" gap="1rem" wrap="wrap">
             {lectures.map((i) => {

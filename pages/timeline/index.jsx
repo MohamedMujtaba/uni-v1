@@ -29,7 +29,7 @@ const data = [
 ];
 
 const TimeLine = () => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [days, setDays] = useState([]);
   const toast = useToast();
 
@@ -70,47 +70,47 @@ const TimeLine = () => {
   //     dep: x[1],
   //   });
   // }, []);
-  useEffect(() => {
-    // const getCookie = () => {
-    //   let x = document.cookie;
-    //   x = x.split("; ");
-    //   x = x.map((i) => {
-    //     return i.split("=")[1];
-    //   });
-    //   setParams({
-    //     year: x[0],
-    //     dep: x[1],
-    //   });
-    // };
-    const getData = async () => {
-      // getCookie();
-      let x = document.cookie;
-      x = x.split("; ");
-      x = x.map((i) => {
-        return i.split("=")[1];
-      });
-      try {
-        setLoading(true);
+  // useEffect(() => {
+  //   // const getCookie = () => {
+  //   //   let x = document.cookie;
+  //   //   x = x.split("; ");
+  //   //   x = x.map((i) => {
+  //   //     return i.split("=")[1];
+  //   //   });
+  //   //   setParams({
+  //   //     year: x[0],
+  //   //     dep: x[1],
+  //   //   });
+  //   // };
+  //   const getData = async () => {
+  //     // getCookie();
+  //     let x = document.cookie;
+  //     x = x.split("; ");
+  //     x = x.map((i) => {
+  //       return i.split("=")[1];
+  //     });
+  //     try {
+  //       setLoading(true);
 
-        const res = await axios.get(
-          // FIXME:
-          `https://uni-api-v1.herokuapp.com/api/v1/lecture/days?dep=${x[1]}&year=${x[0]}`
-        );
-        setDays(res.data.days);
+  //       const res = await axios.get(
+  //         // FIXME:
+  //         `https://uni-api-v1.herokuapp.com/api/v1/lecture/days?dep=${x[1]}&year=${x[0]}`
+  //       );
+  //       setDays(res.data.days);
 
-        setLoading(false);
-      } catch (error) {
-        setLoading(false);
-        toast({
-          title: "Something went wrong",
-          description: "please reload the page",
-          status: "error",
-        });
-        console.log(error);
-      }
-    };
-    getData();
-  }, []);
+  //       setLoading(false);
+  //     } catch (error) {
+  //       setLoading(false);
+  //       toast({
+  //         title: "Something went wrong",
+  //         description: "please reload the page",
+  //         status: "error",
+  //       });
+  //       console.log(error);
+  //     }
+  //   };
+  //   getData();
+  // }, []);
   if (loading) {
     return (
       <Flex w="100%" h="100%" alignItems="center" justifyContent="center">
@@ -118,17 +118,39 @@ const TimeLine = () => {
       </Flex>
     );
   } else {
-    if (days.length === 0) {
-      return (
-        <Flex w="100%" h="100%" alignItems="center" justifyContent="center">
-          <Heading>No thing for now</Heading>
-        </Flex>
-      );
-    }
+    // if (days.length === 0) {
+    //   return (
+    //     <Flex w="100%" h="100%" alignItems="center" justifyContent="center">
+    //       <Heading>No thing for now</Heading>
+    //     </Flex>
+    //   );
+    // }
     return (
       <Container>
         <Flex width="100%" flexWrap="wrap" gap="1rem">
-          {days.map((i) => (
+          {[
+            "Sunday",
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+          ].map((i) => (
+            // FIXME: may need to change the incoming data to include _id
+            <Item key={i} hr={`timeline/${i}`}>
+              <Flex
+                width="100%"
+                h="100%"
+                alignItems="center"
+                justifyContent="space-between"
+              >
+                {/* <Text>{getDayOfTheWeek(i)}</Text> */}
+                <Text>{i}</Text>
+              </Flex>
+            </Item>
+          ))}
+          {/* {days.map((i) => (
             // FIXME: may need to change the incoming data to include _id
             <Item key={i} hr={`timeline/${i}`}>
               <Flex
@@ -141,7 +163,7 @@ const TimeLine = () => {
                 <Text>{i}</Text>
               </Flex>
             </Item>
-          ))}
+          ))} */}
         </Flex>
       </Container>
     );

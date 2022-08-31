@@ -152,11 +152,26 @@ const EditModal = ({
             <Flex gap="1rem">
               <InputGroup flexDirection="column" w="60%">
                 <FormLabel>Date</FormLabel>
-                <Input
+                {/* <Input
                   value={date}
                   type="date"
                   placeholder="Date"
                   onChange={(e) => setDate(e.target.value)}
+                /> */}
+                <MenuComponent
+                  title="Day"
+                  // w="20%"
+                  select={date}
+                  setSelect={setDate}
+                  options={[
+                    "Sunday",
+                    "Monday",
+                    "Tuesday",
+                    "Wednesday",
+                    "Thursday",
+                    "Friday",
+                    "Saturday",
+                  ]}
                 />
               </InputGroup>
               <InputGroup flexDirection="column" w="40%">

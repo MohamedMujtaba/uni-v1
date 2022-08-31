@@ -202,13 +202,27 @@ const Index = () => {
                       setSelect={setYear}
                       options={["", "021", "020", "019", "018", "017", "016"]}
                     />
-                    <MenuComponent />
                     <InputGroup flexDirection="column">
                       <FormLabel>Date</FormLabel>
-                      <Input
+                      <MenuComponent
+                        title="Day"
+                        // w="20%"
+                        select={date}
+                        setSelect={setDate}
+                        options={[
+                          "Sunday",
+                          "Monday",
+                          "Tuesday",
+                          "Wednesday",
+                          "Thursday",
+                          "Friday",
+                          "Saturday",
+                        ]}
+                      />
+                      {/* <Input
                         type="date"
                         onChange={(e) => setDate(e.target.value)}
-                      />
+                      /> */}
                     </InputGroup>
                     <InputGroup flexDirection="column">
                       <FormLabel>Time</FormLabel>

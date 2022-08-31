@@ -82,7 +82,7 @@ const ModalComponent = ({ refresh }) => {
       <IconButton onClick={onOpen} icon={<AddIcon />} colorScheme="teal" />
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
-        <ModalContent >
+        <ModalContent>
           <ModalHeader>Add new lecture</ModalHeader>
           <ModalCloseButton />
           <ModalBody display="flex" gap=".5rem" flexDirection="column">
@@ -105,10 +105,25 @@ const ModalComponent = ({ refresh }) => {
             <Flex gap="1rem">
               <InputGroup flexDirection="column" w="60%">
                 <FormLabel>Date</FormLabel>
-                <Input
+                {/* <Input
                   type="date"
                   placeholder="Date"
                   onChange={(e) => setDate(e.target.value)}
+                /> */}
+                <MenuComponent
+                  title="Day"
+                  // w="20%"
+                  select={date}
+                  setSelect={setDate}
+                  options={[
+                    "Sunday",
+                    "Monday",
+                    "Tuesday",
+                    "Wednesday",
+                    "Thursday",
+                    "Friday",
+                    "Saturday",
+                  ]}
                 />
               </InputGroup>
               <InputGroup flexDirection="column" w="40%">
