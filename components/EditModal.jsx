@@ -128,7 +128,7 @@ const EditModal = ({
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Add new lecture</ModalHeader>
+          <ModalHeader>Edit lecture</ModalHeader>
           <ModalCloseButton />
           <ModalBody display="flex" gap=".5rem" flexDirection="column">
             <InputGroup flexDirection="column">

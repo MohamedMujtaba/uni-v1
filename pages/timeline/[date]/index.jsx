@@ -72,9 +72,28 @@ const Day = () => {
   } else {
     if (lectures.length === 0) {
       return (
-        <Flex h="30vh" w="100%" alignItems="center" justifyContent="center">
-          <Heading size="lg">No Lectures for now</Heading>
-        </Flex>
+        <Container>
+          <Flex h="30vh" w="100%" flexDirection="column">
+            <Flex
+              w="100%"
+              maxW="55vw"
+              alignItems="center"
+              justifyContent="space-between"
+              marginBottom="4"
+            >
+              <IconButton
+                variant="ghost"
+                icon={<ArrowBackIcon />}
+                onClick={() => router.back()}
+              />
+              <Heading size="sm">{router.query["date"]}</Heading>
+              {/* <Heading size="sm">{getDayOfTheWeek(router.query["date"])}</Heading> */}
+            </Flex>
+            <Flex w="100%" alignItems="center" justifyContent="center" h="40vh">
+              <Heading size="lg">No Lectures for now</Heading>
+            </Flex>
+          </Flex>
+        </Container>
       );
     }
 
@@ -83,7 +102,7 @@ const Day = () => {
         <Flex flexDirection="column" w="100%">
           <Flex
             w="100%"
-            maxW="50vw"
+            maxW="55vw"
             alignItems="center"
             justifyContent="space-between"
             marginBottom="4"
