@@ -38,7 +38,7 @@ export default function Home() {
             setSelect={setYear}
           />
           <MenuComponent
-            options={["Pet", "EE", "Mec", "Civ", "Agr", "Min"]}
+            options={["Pet", "EE", "Mec", "Civ", "Agr", "Min", "Chem", "Sur"]}
             select={major}
             setSelect={setMajor}
           />
