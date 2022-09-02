@@ -11,7 +11,6 @@ const Day = ({ lectures }) => {
   const router = useRouter();
   // const [lectures, SetLectures] = useState([]);
   const [loading, setLoading] = useState(true);
-  console.log(lectures);
   const toast = useToast();
   useEffect(() => {
     let x = document.cookie;
@@ -111,11 +110,11 @@ export const getServerSideProps = async (context) => {
   const { req, res, params } = context;
   res.setHeader(
     "Cache-Control",
-    "public, s-maxage=20, stale-while-revalidate=59"
+    "public, s-maxage=60, stale-while-revalidate=59"
   );
   try {
     const data = await axios.get(
-      `https://uni-api-v1.vercel.app/api/v1/lecture?date=${params.date}&dep=${req.cookies["major"]}&year=${req.cookies["year"]}`
+      `https://uni-api-v1.herokuapp.com/api/v1/lecture?date=${params.date}&dep=${req.cookies["major"]}&year=${req.cookies["year"]}`
     );
     // console.log(data);
     return {
