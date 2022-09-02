@@ -12,6 +12,7 @@ export default function Home() {
   const [major, setMajor] = useState("");
   const [isDisabled, setIsDisabled] = useState(false);
   const handleLocalStorage = () => {
+    setIsDisabled(true);
     document.cookie = `year=${year}`;
     document.cookie = `major=${major}`;
     router.push("/timeline");
@@ -41,6 +42,7 @@ export default function Home() {
             select={major}
             setSelect={setMajor}
           />
+
           {year && major && !isDisabled && (
             <IconButton
               disabled={isDisabled}
