@@ -48,7 +48,7 @@ const EditModal = ({
   // const getLecture = async () => {
   //   try {
   //     const res = await axios.get(
-  //       `https://uni-api-v1.herokuapp.com/api/v1/lecture/${id}`
+  //       `https://uni-api-v1.vercel.app/api/v1/lecture/${id}`
   //     );
   //   } catch (error) {
   //     toast({
@@ -75,7 +75,7 @@ const EditModal = ({
     setLoading(true);
     try {
       await axios.patch(
-        `https://uni-api-v1.herokuapp.com/api/v1/lecture/${lecture._id}`,
+        `https://uni-api-v1.vercel.app/api/v1/lecture/${lecture._id}`,
         {
           title,
           hall,

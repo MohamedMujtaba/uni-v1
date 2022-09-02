@@ -37,7 +37,7 @@ const TimeLine = () => {
   //   try {
   //     const res = await axios.get(
   //       // FIXME:
-  //       `https://uni-api-v1.herokuapp.com/api/v1/lecture/days?dep=${params.dep}&year=${params.year}`
+  //       `https://uni-api-v1.vercel.app/api/v1/lecture/days?dep=${params.dep}&year=${params.year}`
   //     );
   //     setDays(res.data.days);
   //     console.log(params);
@@ -94,7 +94,7 @@ const TimeLine = () => {
 
   //       const res = await axios.get(
   //         // FIXME:
-  //         `https://uni-api-v1.herokuapp.com/api/v1/lecture/days?dep=${x[1]}&year=${x[0]}`
+  //         `https://uni-api-v1.vercel.app/api/v1/lecture/days?dep=${x[1]}&year=${x[0]}`
   //       );
   //       setDays(res.data.days);
 

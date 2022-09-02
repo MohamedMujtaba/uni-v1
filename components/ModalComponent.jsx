@@ -40,7 +40,7 @@ const ModalComponent = ({ refresh }) => {
   const handelSubmit = async () => {
     setLoading(true);
     try {
-      await axios.post("https://uni-api-v1.herokuapp.com/api/v1/lecture", {
+      await axios.post("https://uni-api-v1.vercel.app/api/v1/lecture", {
         title,
         hall,
         date,

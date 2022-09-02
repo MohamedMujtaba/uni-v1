@@ -73,7 +73,7 @@ const Index = () => {
   const getData = useCallback(async () => {
     try {
       const res = await axios.get(
-        `https://uni-api-v1.herokuapp.com/api/v1/lecture?title=${title}&hall=${hall}&date=${date}&time=${time}&dep=${dep}&year=${year}`
+        `https://uni-api-v1.vercel.app/api/v1/lecture?title=${title}&hall=${hall}&date=${date}&time=${time}&dep=${dep}&year=${year}`
       );
       setLectures(res.data.lectures);
     } catch (error) {
@@ -83,7 +83,7 @@ const Index = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete("https://uni-api-v1.herokuapp.com/api/v1/lecture", {
+      await axios.delete("https://uni-api-v1.vercel.app/api/v1/lecture", {
         data: { arr: deleteArr },
       });
 
