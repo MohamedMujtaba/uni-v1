@@ -41,12 +41,14 @@ const Day = () => {
     const getData = async () => {
       try {
         setLoading(true);
+        if(params.year !== "" && params.dep !== ""){
         // `https://uni-api-v1.vercel.app/api/v1/lecture?date=${router.query["date"]}&dep=${params.dep}&year=${params.year}`
         const res = await axios.get(
           `https://uni-api-v1.vercel.app/api/v1/lecture?date=${router.query["date"]}&dep=${params.dep}&year=${params.year}`
         );
         SetLectures(res.data.lectures);
         setLoading(false);
+          }
       } catch (error) {
         setLoading(false);
 
