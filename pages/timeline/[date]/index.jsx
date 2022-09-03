@@ -13,17 +13,17 @@ const Day = () => {
   const [loading, setLoading] = useState(true);
 
   const toast = useToast();
-  useEffect(() => {
-    let x = document.cookie;
-    x = x.split("; ");
-    x = x.map((i) => {
-      return i.split("=")[1];
-    });
-    setParams({
-      year: x[0],
-      dep: x[1],
-    });
-  }, []);
+//  useEffect(() => {
+ //   let x = document.cookie;
+ //   x = x.split("; ");
+  //  x = x.map((i) => {
+  //    return i.split("=")[1];
+ //   });
+//    setParams({
+ //     year: x[0],
+//      dep: x[1],
+//    });
+//  }, []);
   const getDayOfTheWeek = (date) => {
     const d = new Date(date);
     const weekday = [
@@ -39,16 +39,23 @@ const Day = () => {
   };
   useEffect(() => {
     const getData = async () => {
+      
+      let x = document.cookie;
+      x = x.split("; ");
+      x = x.map((i) => {
+        
+        return i.split("=")[1];
+      });
       try {
         setLoading(true);
-        if(params.year !== "" && params.dep !== ""){
+
         // `https://uni-api-v1.vercel.app/api/v1/lecture?date=${router.query["date"]}&dep=${params.dep}&year=${params.year}`
         const res = await axios.get(
-          `https://uni-api-v1.vercel.app/api/v1/lecture?date=${router.query["date"]}&dep=${params.dep}&year=${params.year}`
+          `https://uni-api-v1.vercel.app/api/v1/lecture?date=${router.query["date"]}&dep=${x[1]}&year=${x[0]}`
         );
         SetLectures(res.data.lectures);
         setLoading(false);
-          }
+          
       } catch (error) {
         setLoading(false);
 
