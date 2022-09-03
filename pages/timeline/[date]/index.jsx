@@ -51,7 +51,7 @@ const Day = () => {
 
         // `https://uni-api-v1.vercel.app/api/v1/lecture?date=${router.query["date"]}&dep=${params.dep}&year=${params.year}`
         const res = await axios.get(
-          `https://uni-api-v1.vercel.app/api/v1/lecture?date=${router.query["date"]}&dep=${x[1]}&year=${x[0]}`
+          `https://uni-api-v1.vercel.app/api/v1/lecture?date=${router.query["date"]}&dep=${"Pet"}&year=${'019'}`
         );
         SetLectures(res.data.lectures);
         setLoading(false);
