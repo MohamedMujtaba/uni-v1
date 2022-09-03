@@ -71,7 +71,7 @@ const Day = () => {
       }
     };
     getData();
-  }, [params.dep, params.year, router.query, toast]);
+  }, [ router.query, toast]);
   if (loading) {
     return (
       <Flex w="100%" h="100%" alignItems="center" justifyContent="center">
