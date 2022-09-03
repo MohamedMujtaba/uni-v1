@@ -38,20 +38,21 @@ const Day = () => {
     return weekday[d?.getDay()];
   };
   useEffect(() => {
-    const getData = async () => {
-      
-      let x = document.cookie;
+    let x = document.cookie;
       x = x.split("; ");
       x = x.map((i) => {
         
         return i.split("=")[1];
       });
+    const getData = async () => {
+      
+      
       try {
         setLoading(true);
 
         // `https://uni-api-v1.vercel.app/api/v1/lecture?date=${router.query["date"]}&dep=${params.dep}&year=${params.year}`
         const res = await axios.get(
-          `https://uni-api-v1.vercel.app/api/v1/lecture?date=${router.query["date"]}&dep=${"Pet"}&year=${'019'}`
+          `https://uni-api-v1.vercel.app/api/v1/lecture?date=${router.query["date"]}&dep=${x[1]}&year=${x[0]}`
         );
         SetLectures(res.data.lectures);
         setLoading(false);
