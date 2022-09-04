@@ -6,24 +6,27 @@ import Lecture from "../../../components/Lecture";
 import axios from "axios";
 import { useToast } from "@chakra-ui/react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
+import { useSelector } from "react-redux";
+
 const Day = () => {
   const [params, setParams] = useState({ year: "", dep: "" });
   const router = useRouter();
   const [lectures, SetLectures] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const [y, setY] = useState("");
+  const { year, dep } = useSelector((store) => store.params);
   const toast = useToast();
-//  useEffect(() => {
- //   let x = document.cookie;
- //   x = x.split("; ");
-  //  x = x.map((i) => {
-  //    return i.split("=")[1];
- //   });
-//    setParams({
- //     year: x[0],
-//      dep: x[1],
-//    });
-//  }, []);
+  useEffect(() => {
+    let x = document.cookie;
+    x = x.split("; ");
+    x = x.map((i) => {
+      return i.split("=")[1];
+    });
+    setParams({
+      year: x[0],
+      dep: x[1],
+    });
+  }, []);
   const getDayOfTheWeek = (date) => {
     const d = new Date(date);
     const weekday = [
@@ -38,25 +41,27 @@ const Day = () => {
     return weekday[d?.getDay()];
   };
   useEffect(() => {
-    let x = document.cookie;
-      x = x.split("; ");
-      x = x.map((i) => {
-        
-        return i.split("=")[1];
-      });
+    // let x = document.cookie;
+    // x = x.split("; ");
+    // x = x.map((i) => {
+    //   return i.split("=")[1];
+    // });
+    // setParams({
+    //   year: x[0],
+    //   dep: x[1],
+    // });
     const getData = async () => {
-      
-      
       try {
         setLoading(true);
-
         // `https://uni-api-v1.vercel.app/api/v1/lecture?date=${router.query["date"]}&dep=${params.dep}&year=${params.year}`
         const res = await axios.get(
-          `https://uni-api-v1.vercel.app/api/v1/lecture?date=${router.query["date"]}&dep=${x[1]}&year=${x[0]}`
+          // `https://uni-api-v1.herokuapp.com/api/v1/lecture?date=${router.query["date"]}&dep=${params.dep}&year=${params.year}`
+          `https://uni-api-v1.vercel.app/api/v1/lecture?date=${router.query["date"]}&dep=${dep}&year=${year}`
         );
+        console.log(res);
+        setY(res);
         SetLectures(res.data.lectures);
         setLoading(false);
-          
       } catch (error) {
         setLoading(false);
 
@@ -72,7 +77,7 @@ const Day = () => {
       }
     };
     getData();
-  }, [ router.query, toast]);
+  }, [dep, year, router.query]);
   if (loading) {
     return (
       <Flex w="100%" h="100%" alignItems="center" justifyContent="center">
@@ -86,7 +91,7 @@ const Day = () => {
           <Flex h="30vh" w="100%" flexDirection="column">
             <Flex
               w="100%"
-              maxW="55vw"
+              maxW="50vw"
               alignItems="center"
               justifyContent="space-between"
               marginBottom="4"
@@ -112,7 +117,7 @@ const Day = () => {
         <Flex flexDirection="column" w="100%">
           <Flex
             w="100%"
-            maxW="55vw"
+            maxW="50vw"
             alignItems="center"
             justifyContent="space-between"
             marginBottom="4"

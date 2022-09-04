@@ -2,19 +2,23 @@ import { CheckIcon } from "@chakra-ui/icons";
 import { Button, Flex, Heading, IconButton, Spinner } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import Container from "../components/Container";
 import Item from "../components/Item";
 import MenuComponent from "../components/MenuComponent";
 import Navbar from "../components/Navbar";
+import { saveParams } from "../redux/paramsSlice";
 export default function Home() {
   const router = useRouter();
   const [year, setYear] = useState("");
   const [major, setMajor] = useState("");
   const [isDisabled, setIsDisabled] = useState(false);
+  const dispatch = useDispatch();
   const handleLocalStorage = () => {
     setIsDisabled(true);
     document.cookie = `year=${year}`;
     document.cookie = `major=${major}`;
+    dispatch(saveParams({ year, dep: major }));
     router.push("/timeline");
   };
 
