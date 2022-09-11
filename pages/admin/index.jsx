@@ -44,6 +44,8 @@ import axios from "axios";
 import ModalComponent from "../../components/ModalComponent";
 import AlertDialogComponent from "../../components/AlertDialogComponent";
 import EditModal from "../../components/EditModal";
+import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/router";
 const Index = () => {
   const [lectures, setLectures] = useState([]);
   const [lecture, setLecture] = useState(null);
@@ -55,10 +57,11 @@ const Index = () => {
   const [year, setYear] = useState("");
   const [deleteArr, setDeleteArr] = useState([]);
   const [s, setS] = useState(false);
+  const [loading, setLoading] = useState(true);
   const { isOpen, onOpen, onClose } = useDisclosure();
-
   const toast = useToast();
-
+  const { isAdmin } = useSelector((state) => state.admin);
+  const router = useRouter();
   const displayStatus = (s) => {
     if (s === "listed") {
       return <Badge colorScheme="green">قائمة</Badge>;
@@ -105,6 +108,14 @@ const Index = () => {
   };
 
   useEffect(() => {
+    if (isAdmin) {
+      setLoading(false);
+    } else {
+      router.push("/login");
+    }
+  }, []);
+
+  useEffect(() => {
     getData();
   }, [getData]);
   const handleS = () => {
@@ -133,6 +144,15 @@ const Index = () => {
       onClose();
     }
   }, [lecture, onClose, onOpen]);
+  if (loading) {
+    return (
+      <Container HH="88vh">
+        <Flex w="100%" height="100%" flexDirection="column">
+          wait
+        </Flex>
+      </Container>
+    );
+  }
   return (
     <Container HH="88vh">
       <Flex w="100%" height="100%" flexDirection="column">

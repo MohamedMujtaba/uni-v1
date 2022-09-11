@@ -11,13 +11,14 @@ import {
   REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import adminSlice from "./adminSlice";
 const persistConfig = {
   key: "root",
   version: 1,
   storage,
 };
 
-const rootReducer = combineReducers({ params: paramsSlice });
+const rootReducer = combineReducers({ params: paramsSlice, admin: adminSlice });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 export const store = configureStore({
   reducer: persistedReducer,

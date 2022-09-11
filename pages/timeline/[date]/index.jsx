@@ -56,9 +56,11 @@ const Day = () => {
         // `https://uni-api-v1.vercel.app/api/v1/lecture?date=${router.query["date"]}&dep=${params.dep}&year=${params.year}`
         const res = await axios.get(
           // `https://uni-api-v1.herokuapp.com/api/v1/lecture?date=${router.query["date"]}&dep=${params.dep}&year=${params.year}`
-          `https://uni-api-v1.vercel.app/api/v1/lecture?date=${router.query["date"]}&dep=${dep}&year=${year}`
+          `https://uni-api-v1.vercel.app/api/v1/lecture?date=${router.query["date"]}&dep=${dep}&year=${year}`,
+          {
+            headers: { "Cache-Control": "max-age=60" },
+          }
         );
-        console.log(res);
         setY(res);
         SetLectures(res.data.lectures);
         setLoading(false);

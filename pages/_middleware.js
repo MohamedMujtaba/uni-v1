@@ -6,7 +6,14 @@ export async function middleware(req, ev) {
   // if (pathname == "/timeline" && (!year || !major)) {
   //   return NextResponse.redirect(`${origin}`);
   // }
-  if (pathname !== "/" && (!year || !major) && !pathname.includes("admin")) {
+  // if (
+  //   pathname !== "/" &&
+  //   (!year || !major) &&
+  //   (!pathname.includes("admin") || !pathname.includes("login"))
+  // ) {
+  //   return NextResponse.redirect(`${origin}`);
+  // }
+  if (pathname.includes("timeline") && (!year || !major)) {
     return NextResponse.redirect(`${origin}`);
   }
   if (pathname == "/" && year && major) {

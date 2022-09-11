@@ -17,12 +17,15 @@ import { DarkModeSwitch } from "./DarkModeSwitch";
 import Link from "next/link";
 import { deleteAllCookies } from "../utils/deleteCookies";
 import { useRouter } from "next/router";
-
+import { useDispatch, useSelector } from "react-redux";
+import { GiExitDoor } from "react-icons/gi";
+import { logout } from "../redux/adminSlice";
 const DrawerComponent = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
   const btnRef = React.useRef();
-
+  const { isAdmin } = useSelector((state) => state.admin);
+  const dispatch = useDispatch();
   return (
     <>
       <IconButton
@@ -55,15 +58,27 @@ const DrawerComponent = () => {
 
           <DrawerFooter>
             <DarkModeSwitch />
-            <IconButton
-              marginLeft=".5rem"
-              onClick={() => {
-                onClose();
-                deleteAllCookies();
-                router.push("/");
-              }}
-              icon={<DeleteIcon />}
-            />
+            {isAdmin && !router.pathname.includes("timeline") ? (
+              <IconButton
+                marginLeft=".5rem"
+                onClick={() => {
+                  onClose();
+                  dispatch(logout());
+                  router.push("/login");
+                }}
+                icon={<GiExitDoor />}
+              />
+            ) : (
+              <IconButton
+                marginLeft=".5rem"
+                onClick={() => {
+                  onClose();
+                  deleteAllCookies();
+                  router.push("/");
+                }}
+                icon={<GiExitDoor />}
+              />
+            )}
           </DrawerFooter>
         </DrawerContent>
       </Drawer>

@@ -40,11 +40,13 @@ export default function Home() {
             options={["021", "020", "019", "018", "017", "016"]}
             select={year}
             setSelect={setYear}
+            title={"Year"}
           />
           <MenuComponent
             options={["Pet", "EE", "Mec", "Civ", "Agr", "Min", "Chem", "Sur"]}
             select={major}
             setSelect={setMajor}
+            title={"Major"}
           />
 
           {year && major && !isDisabled && (
