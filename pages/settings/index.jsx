@@ -3,7 +3,7 @@ import { Flex, HStack, Tag, TagLabel, TagCloseButton } from "@chakra-ui/react";
 const index = () => {
   return (
     <Container>
-      <Flex w="100%" alignItems="center" justifyContent="center" mt={4}>
+      <Flex w="100%" alignItems="center" justifyContent="center" mt={4} flexDirection="column">
         <Flex
           spacing={4}
           wrap="wrap"
