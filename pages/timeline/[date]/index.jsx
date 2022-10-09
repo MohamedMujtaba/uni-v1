@@ -129,7 +129,7 @@ const Day = () => {
             <Heading size="sm">{router.query["date"]}</Heading>
             {/* <Heading size="sm">{getDayOfTheWeek(router.query["date"])}</Heading> */}
           </Flex>
-          <Flex w="100%" gap="1rem" wrap="wrap">
+          <Flex w="100%" gap="1rem" wrap="wrap" mb={8}>
             {lectures.map((i) => {
               return <Lecture i={i} key={i._id} />;
             })}

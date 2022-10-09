@@ -33,6 +33,7 @@ const ModalComponent = ({ refresh }) => {
   const [time, setTime] = useState("");
   const [dep, setDep] = useState("");
   const [year, setYear] = useState("");
+  const [note, setNote] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [loading, setLoading] = useState(false);
   const toast = useToast();
@@ -47,6 +48,7 @@ const ModalComponent = ({ refresh }) => {
         time,
         dep,
         year,
+        note,
       });
       setLoading(false);
 
@@ -58,6 +60,7 @@ const ModalComponent = ({ refresh }) => {
       setTime("");
       setDep("");
       setYear("");
+      setNote("");
     } catch (error) {
       setLoading(false);
       toast({
@@ -100,6 +103,14 @@ const ModalComponent = ({ refresh }) => {
                 placeholder="Hall"
                 type="text"
                 onChange={(e) => setHall(e.target.value)}
+              />
+            </InputGroup>
+            <InputGroup flexDirection="column">
+              <FormLabel>Note</FormLabel>
+              <Input
+                placeholder="Note if any"
+                type="text"
+                onChange={(e) => setNote(e.target.value)}
               />
             </InputGroup>
             <Flex gap="1rem">

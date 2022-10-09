@@ -40,6 +40,7 @@ const EditModal = ({
   const [time, setTime] = useState("");
   const [dep, setDep] = useState("");
   const [year, setYear] = useState("");
+  const [note, setNote] = useState("");
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
   const toast = useToast();
@@ -68,6 +69,7 @@ const EditModal = ({
     setTime(lecture?.time);
     setDep(lecture?.dep);
     setYear(lecture?.year);
+    setNote(lecture?.note);
     setStatus(lecture?.status);
   }, [lecture]);
 
@@ -84,6 +86,7 @@ const EditModal = ({
           dep,
           year,
           status,
+          note,
         }
       );
       setLoading(false);
@@ -96,6 +99,8 @@ const EditModal = ({
       setTime("");
       setDep("");
       setYear("");
+      setNote("");
+
       setStatus("");
       setLecture(null);
     } catch (error) {
@@ -147,6 +152,15 @@ const EditModal = ({
                 placeholder="Hall"
                 type="text"
                 onChange={(e) => setHall(e.target.value)}
+              />
+            </InputGroup>
+            <InputGroup flexDirection="column">
+              <FormLabel>Note</FormLabel>
+              <Input
+                value={note}
+                placeholder="Note if any"
+                type="text"
+                onChange={(e) => setNote(e.target.value)}
               />
             </InputGroup>
             <Flex gap="1rem">
