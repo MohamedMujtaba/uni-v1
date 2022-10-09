@@ -33,7 +33,11 @@ const Lecture = ({ i }) => {
         borderRightColor: "blue.200",
       }}
     >
-      <Flex w="90%" justifyContent="space-between">
+      <Flex
+        w={["90%", "100%"]}
+        justifyContent="space-between"
+        paddingX={["0", 2]}
+      >
         <Text>{i.time}</Text>
         <Text>{i.title}</Text>
       </Flex>

@@ -13,7 +13,6 @@ const Day = () => {
   const router = useRouter();
   const [lectures, SetLectures] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [y, setY] = useState("");
   const { year, dep } = useSelector((store) => store.params);
   const toast = useToast();
   useEffect(() => {
@@ -61,12 +60,10 @@ const Day = () => {
             headers: { "Cache-Control": "max-age=60" },
           }
         );
-        setY(res);
         SetLectures(res.data.lectures);
         setLoading(false);
       } catch (error) {
         setLoading(false);
-
         console.log(error);
 
         toast({
@@ -79,7 +76,7 @@ const Day = () => {
       }
     };
     getData();
-  }, [dep, year, router.query]);
+  }, [dep, year, router.query, toast]);
   if (loading) {
     return (
       <Flex w="100%" h="100%" alignItems="center" justifyContent="center">
