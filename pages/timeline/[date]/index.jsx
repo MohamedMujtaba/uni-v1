@@ -1,4 +1,20 @@
-import { Flex, Heading, IconButton, Spinner } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  Heading,
+  IconButton,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Skeleton,
+  Spinner,
+  useDisclosure,
+  VStack,
+} from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Container from "../../../components/Container";
@@ -15,6 +31,8 @@ const Day = () => {
   const [loading, setLoading] = useState(true);
   const { year, dep } = useSelector((store) => store.params);
   const toast = useToast();
+  const [n, setN] = useState("");
+  const { isOpen, onOpen, onClose } = useDisclosure();
   useEffect(() => {
     let x = document.cookie;
     x = x.split("; ");
@@ -79,9 +97,29 @@ const Day = () => {
   }, [dep, year, router.query, toast]);
   if (loading) {
     return (
-      <Flex w="100%" h="100%" alignItems="center" justifyContent="center">
-        <Spinner size="lg" />
-      </Flex>
+      <Container>
+        <VStack w="100%" gap={1}>
+          <Skeleton
+            mt={4}
+            height="40px"
+            boxShadow="1px 1px 3px 0px rgba(0,0,0,0.1)"
+            padding="0.5rem"
+            width="100%"
+          />
+          <Skeleton
+            height="130px"
+            boxShadow="1px 1px 3px 0px rgba(0,0,0,0.1)"
+            padding="0.5rem"
+            width={["100%", "40%", "30%"]}
+          />
+          <Skeleton
+            height="130px"
+            boxShadow="1px 1px 3px 0px rgba(0,0,0,0.1)"
+            padding="0.5rem"
+            width={["100%", "40%", "30%"]}
+          />
+        </VStack>
+      </Container>
     );
   } else {
     if (lectures.length === 0) {
@@ -113,6 +151,12 @@ const Day = () => {
 
     return (
       <Container>
+        <NoteComponent
+          onClose={onClose}
+          isOpen={isOpen}
+          note={n}
+          setNote={setN}
+        />
         <Flex flexDirection="column" w="100%">
           <Flex
             w="100%"
@@ -131,13 +175,41 @@ const Day = () => {
           </Flex>
           <Flex w="100%" gap="1rem" wrap="wrap" mb={8}>
             {lectures.map((i) => {
-              return <Lecture i={i} key={i._id} />;
+              return (
+                <Lecture i={i} key={i._id} onOpen={onOpen} setNote={setN} />
+              );
             })}
           </Flex>
         </Flex>
       </Container>
     );
   }
+};
+const NoteComponent = ({ note, isOpen, onClose, setNote }) => {
+  return (
+    <Modal
+      size="xs"
+      isCentered
+      isOpen={isOpen}
+      onClose={() => {
+        onClose();
+        setNote("");
+      }}
+    >
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>Notes</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>{note}</ModalBody>
+
+        <ModalFooter>
+          {/* <Button colorScheme="blue" mr={3} onClick={onClose}>
+            Close
+          </Button> */}
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  );
 };
 
 export default Day;

@@ -105,20 +105,6 @@ const TimeLine = () => {
             </Flex>
           </Item>
         ))}
-        {/* {days.map((i) => (
-            // FIXME: may need to change the incoming data to include _id
-            <Item key={i} hr={`timeline/${i}`}>
-              <Flex
-                width="100%"
-                h="100%"
-                alignItems="center"
-                justifyContent="space-between"
-              >
-                <Text>{getDayOfTheWeek(i)}</Text>
-                <Text>{i}</Text>
-              </Flex>
-            </Item>
-          ))} */}
       </Flex>
     </Container>
   );

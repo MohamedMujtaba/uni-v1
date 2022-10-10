@@ -1,6 +1,7 @@
-import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
+import { TriangleDownIcon, InfoOutlineIcon } from "@chakra-ui/icons";
 import {
   Badge,
+  Button,
   chakra,
   Divider,
   Flex,
@@ -27,7 +28,7 @@ const T = chakra(motion.p, {
     isValidMotionProp(prop) || shouldForwardProp(prop),
 });
 
-const Lecture = ({ i }) => {
+const Lecture = ({ i, setNote, onOpen }) => {
   const [show, setShow] = useState(false);
   const displayStatus = (s) => {
     if (s === "listed") {
@@ -41,12 +42,12 @@ const Lecture = ({ i }) => {
     }
   };
   return (
-    <ChakraBox
+    <Flex
       display="flex"
       boxShadow="1px 1px 3px 0px rgba(0,0,0,0.1)"
-      minHeight="120px"
+      height="130px"
       flexDirection="column"
-      padding="0.5rem"
+      padding="0.7rem"
       width={["100%", "40%", "30%"]}
       // borderRadius="sm"
       borderRightWidth="3px"
@@ -64,10 +65,11 @@ const Lecture = ({ i }) => {
         duration: 0.2,
         ease: "linear",
       }}
+      position="relative"
     >
       <Flex
         w="100%"
-        h="120px"
+        h="100%"
         flexDirection="column"
         alignItems="center"
         justifyContent="space-evenly"
@@ -75,7 +77,7 @@ const Lecture = ({ i }) => {
         <Flex
           w={["90%", "100%"]}
           justifyContent="space-between"
-          paddingX={["0", 2]}
+          paddingX={[0, 2]}
           Height="120px"
         >
           <Text>{i.time}</Text>
@@ -88,48 +90,23 @@ const Lecture = ({ i }) => {
         </Flex>
       </Flex>
       {i.note && (
-        <ChakraBox
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          w="90%"
-          h="30px"
-          marginY={1}
-          flexDirection="column"
-          p={2}
-          animate={{
-            height: show ? "auto" : "30px",
-          }}
-          transition={{
-            duration: 0.2,
-            ease: "linear",
-            type: "linear",
-          }}
-        >
-          {show && (
-            <T
-              opacity={0}
-              animate={{ opacity: show ? 1 : 0 }}
-              transition={{
-                duration: 0.25,
-                ease: "linear",
-              }}
-            >
-              {i.note}
-            </T>
-          )}
-          <IconButton
+        <>
+          <Flex position="absolute" left={1.5} top={1.5}>
+            <InfoOutlineIcon color="red.300" />
+          </Flex>
+          <Button
             w="100%"
-            my={1}
+            h="100%"
+            position="absolute"
             variant="unStyled"
-            h="30px"
-            icon={show ? <ChevronUpIcon /> : <ChevronDownIcon />}
-            onClick={() => setShow(!show)}
-          />
-          {/* <Text>{i.note}</Text> */}
-        </ChakraBox>
+            onClick={() => {
+              setNote(i.note);
+              onOpen();
+            }}
+          ></Button>
+        </>
       )}
-    </ChakraBox>
+    </Flex>
   );
 };
 
