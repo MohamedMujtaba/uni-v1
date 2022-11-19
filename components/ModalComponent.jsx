@@ -88,7 +88,7 @@ const ModalComponent = ({ refresh }) => {
     }
   };
   const Val = () => {
-    if (!title || !date || !time || !depL || !hall || !yearL) {
+    if (!title || !date || !time || !hall) {
       return true;
     } else {
       return false;
@@ -97,7 +97,7 @@ const ModalComponent = ({ refresh }) => {
   useEffect(() => {
     setDepL(dep);
     setYearL(year);
-  }, [year, dep]);
+  }, [dep, year]);
   return (
     <>
       <IconButton onClick={onOpen} icon={<AddIcon />} colorScheme="teal" />

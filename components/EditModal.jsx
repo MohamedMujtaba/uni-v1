@@ -129,7 +129,7 @@ const EditModal = ({
     }
   };
   const Val = () => {
-    if (!title || !date || !time || !dep || !hall || !year) {
+    if (!title || !date || !time || !hall) {
       return true;
     } else {
       return false;
