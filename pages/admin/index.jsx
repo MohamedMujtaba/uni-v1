@@ -88,8 +88,8 @@ const Index = () => {
     try {
       console.log({ y, d });
       const res = await axios.get(
-        // `https://uni-api-v1.vercel.app/api/v1/lecture?title=${title}&hall=${hall}&date=${date}&time=${time}&dep=${d}&year=${y}&sort=time`
-        `http://localhost:5000/api/v1/lecture?title=${title}&hall=${hall}&date=${date}&time=${time}&dep=${d}&year=${y}&sort=time,day`
+        `https://uni-api-v1.vercel.app/api/v1/lecture?title=${title}&hall=${hall}&date=${date}&time=${time}&dep=${d}&year=${y}&sort=time`
+        // `http://localhost:5000/api/v1/lecture?title=${title}&hall=${hall}&date=${date}&time=${time}&dep=${d}&year=${y}&sort=time,day`
       );
       setLectures(res.data.lectures);
       console.log(res.data);
