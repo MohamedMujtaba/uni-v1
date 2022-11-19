@@ -32,6 +32,7 @@ import {
   FormLabel,
   useDisclosure,
   Text,
+  Heading,
 } from "@chakra-ui/react";
 import MenuComponent from "../../components/MenuComponent";
 import {
@@ -47,20 +48,20 @@ import EditModal from "../../components/EditModal";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 const Index = () => {
+  const { role, year, dep } = useSelector((state) => state.admin);
   const [lectures, setLectures] = useState([]);
   const [lecture, setLecture] = useState(null);
   const [title, setTitle] = useState("");
   const [hall, setHall] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
-  const [dep, setDep] = useState("");
-  const [year, setYear] = useState("");
+  const [depL, setDepL] = useState(dep);
+  const [yearL, setYearL] = useState(year);
   const [deleteArr, setDeleteArr] = useState([]);
   const [s, setS] = useState(false);
   const [loading, setLoading] = useState(true);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
-  const { isAdmin } = useSelector((state) => state.admin);
   const router = useRouter();
   const displayStatus = (s) => {
     if (s === "listed") {
@@ -74,15 +75,28 @@ const Index = () => {
     }
   };
   const getData = useCallback(async () => {
+    let y;
+    let d;
+    if (role === "admin") {
+      y = year;
+      d = dep;
+    }
+    if (role === "superAdmin") {
+      y = yearL;
+      d = depL;
+    }
     try {
+      console.log({ y, d });
       const res = await axios.get(
-        `https://uni-api-v1.vercel.app/api/v1/lecture?title=${title}&hall=${hall}&date=${date}&time=${time}&dep=${dep}&year=${year}`
+        // `https://uni-api-v1.vercel.app/api/v1/lecture?title=${title}&hall=${hall}&date=${date}&time=${time}&dep=${d}&year=${y}&sort=time`
+        `http://localhost:5000/api/v1/lecture?title=${title}&hall=${hall}&date=${date}&time=${time}&dep=${d}&year=${y}&sort=time,day`
       );
       setLectures(res.data.lectures);
+      console.log(res.data);
     } catch (error) {
       console.log(error);
     }
-  }, [date, dep, hall, time, title, year]);
+  }, [date, dep, depL, hall, role, time, title, year, yearL]);
 
   const handleDelete = async () => {
     try {
@@ -108,12 +122,12 @@ const Index = () => {
   };
 
   useEffect(() => {
-    if (isAdmin) {
+    if (role === "admin" || role === "superAdmin") {
       setLoading(false);
     } else {
       router.push("/login");
     }
-  }, []);
+  }, [role, router]);
 
   useEffect(() => {
     getData();
@@ -201,9 +215,10 @@ const Index = () => {
                 <PopoverBody>
                   <Flex gap="1rem" flexWrap={"wrap"} p={2}>
                     <MenuComponent
+                      disabled={role === "admin"}
                       title="Department"
-                      select={dep}
-                      setSelect={setDep}
+                      select={depL}
+                      setSelect={setDepL}
                       options={[
                         "",
                         "Pet",
@@ -217,9 +232,10 @@ const Index = () => {
                       ]}
                     />
                     <MenuComponent
+                      disabled={role === "admin"}
                       title="Year"
-                      select={year}
-                      setSelect={setYear}
+                      select={yearL || year}
+                      setSelect={setYearL}
                       options={["", "021", "020", "019", "018", "017", "016"]}
                     />
                     <InputGroup flexDirection="column">
@@ -256,8 +272,8 @@ const Index = () => {
                         onClick={() => {
                           setDate("");
                           setTime("");
-                          setDep("");
-                          setYear("");
+                          setDepL("");
+                          setYearL("");
                         }}
                       >
                         Clear filters
@@ -297,6 +313,9 @@ const Index = () => {
               </Tr>
             </Thead>
             <Tbody>
+              {lectures.length === 0 && (
+                <Heading size={"md"}>No lectures</Heading>
+              )}
               {lectures.map((lecture) => {
                 return (
                   <Tr key={lecture._id}>

@@ -21,9 +21,11 @@ import {
   FormLabel,
   Spinner,
   useToast,
+  Textarea,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import MenuComponent from "./MenuComponent";
 
 const EditModal = ({
@@ -34,12 +36,13 @@ const EditModal = ({
   onOpen,
   isOpen,
 }) => {
+  const { role, year, dep } = useSelector((state) => state.admin);
   const [title, setTitle] = useState("");
   const [hall, setHall] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
-  const [dep, setDep] = useState("");
-  const [year, setYear] = useState("");
+  const [depL, setDepL] = useState("");
+  const [yearL, setYearL] = useState("");
   const [note, setNote] = useState("");
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
@@ -67,14 +70,24 @@ const EditModal = ({
     setHall(lecture?.hall);
     setDate(lecture?.date);
     setTime(lecture?.time);
-    setDep(lecture?.dep);
-    setYear(lecture?.year);
+    setDepL(lecture?.dep);
+    setYearL(lecture?.year);
     setNote(lecture?.note);
     setStatus(lecture?.status);
   }, [lecture]);
 
   const handelSubmit = async () => {
     setLoading(true);
+    let y;
+    let d;
+    if (role === "admin") {
+      y = year;
+      d = dep;
+    }
+    if (role === "superAdmin") {
+      y = yearL;
+      d = depL;
+    }
     try {
       await axios.patch(
         `https://uni-api-v1.vercel.app/api/v1/lecture/${lecture._id}`,
@@ -97,8 +110,8 @@ const EditModal = ({
       setHall("");
       setDate("");
       setTime("");
-      setDep("");
-      setYear("");
+      setDepL("");
+      setYearL("");
       setNote("");
 
       setStatus("");
@@ -156,7 +169,7 @@ const EditModal = ({
             </InputGroup>
             <InputGroup flexDirection="column">
               <FormLabel>Note</FormLabel>
-              <Input
+              <Textarea
                 value={note}
                 placeholder="Note if any"
                 type="text"
@@ -199,10 +212,11 @@ const EditModal = ({
             </Flex>
             <Flex gap="1rem" marginTop=".5rem">
               <MenuComponent
+                disabled={role === "admin"}
                 title="Department"
                 w="20%"
-                select={dep}
-                setSelect={setDep}
+                select={depL || dep}
+                setSelect={setDepL}
                 options={[
                   "Pet",
                   "EE",
@@ -215,10 +229,11 @@ const EditModal = ({
                 ]}
               />
               <MenuComponent
+                disabled={role === "admin"}
                 title="Year"
                 w="30%"
-                select={year}
-                setSelect={setYear}
+                select={yearL || year}
+                setSelect={setYearL}
                 options={["021", "020", "019", "018", "017", "016"]}
               />
               <MenuComponent

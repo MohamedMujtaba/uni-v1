@@ -23,36 +23,68 @@ import {
   AlertDescription,
   AlertTitle,
   Flex,
+  Spinner,
 } from "@chakra-ui/react";
+import axios from "axios";
 import { useRouter } from "next/router";
 import * as React from "react";
 import { useEffect } from "react";
 import { HiEye, HiEyeOff } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
-import { login, setError } from "../../redux/adminSlice";
+import { login, setError, setLoading } from "../../redux/adminSlice";
 const App = () => {
   const [userName, setUserName] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const { isAdmin, isError } = useSelector((state) => state.admin);
+  const { username, role, dep, year, error, loading } = useSelector(
+    (state) => state.admin
+  );
   const dispatch = useDispatch();
   const router = useRouter();
   // const toast = useToast();
-  const handleLogin = () => {
-    dispatch(login({ userName, password }));
-  };
-  useEffect(() => {
-    if (isAdmin) {
-      router.push("/admin");
+  const handleLogin = async () => {
+    try {
+      dispatch(setLoading({ isLoading: true }));
+      const data = await axios.post(
+        "https://uni-api-v1.vercel.app/api/v1/user/login",
+        {
+          username: userName,
+          password,
+        }
+      );
+      if (data) {
+        const { username, role, dep, year } = data.data.user;
+        dispatch(
+          login({
+            username,
+            role,
+            dep,
+            year,
+          })
+        );
+        dispatch(setLoading({ isLoading: false }));
+        dispatch(setError({ err: "" }));
+        router.push("/admin");
+      }
+    } catch (error) {
+      dispatch(setError({ err: error.message }));
+      dispatch(setLoading({ isLoading: false }));
     }
-  }, [isAdmin, router]);
 
-  useEffect(() => {
-    if (isError) {
-      setTimeout(() => {
-        dispatch(setError());
-      }, 5000);
-    }
-  }, [isError, dispatch]);
+    // dispatch(login({ userName, password }));
+  };
+  // useEffect(() => {
+  //   if (isAdmin) {
+  //     router.push("/admin");
+  //   }
+  // }, [isAdmin, router]);
+
+  // useEffect(() => {
+  //   if (error) {
+  //     setTimeout(() => {
+  //       dispatch(setError({ err: null }));
+  //     }, 5000);
+  //   }
+  // }, [error, dispatch]);
   return (
     <Container
       maxW="lg"
@@ -67,7 +99,7 @@ const App = () => {
           boxShadow={{ base: "none", sm: useColorModeValue("md", "md-dark") }}
           borderRadius={{ base: "none", sm: "xl" }}
         >
-          {isError && (
+          {error && (
             <>
               <Alert status="error" flexDirection="column" borderRadius="md">
                 <AlertIcon />
@@ -99,10 +131,10 @@ const App = () => {
             </HStack>
             <Stack spacing="6">
               <Button
-                disabled={userName === "" || password === ""}
+                disabled={userName === "" || password === "" || loading}
                 onClick={handleLogin}
               >
-                Sign in
+                {loading ? <Spinner /> : "Sign in"}
               </Button>
               <HStack>
                 {/* <Divider />

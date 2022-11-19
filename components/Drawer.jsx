@@ -24,7 +24,7 @@ const DrawerComponent = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
   const btnRef = React.useRef();
-  const { isAdmin } = useSelector((state) => state.admin);
+  const { role } = useSelector((state) => state.admin);
   const dispatch = useDispatch();
   return (
     <>
@@ -58,7 +58,7 @@ const DrawerComponent = () => {
 
           <DrawerFooter>
             <DarkModeSwitch />
-            {isAdmin && !router.pathname.includes("timeline") ? (
+            {role && !router.pathname.includes("timeline") ? (
               <IconButton
                 marginLeft=".5rem"
                 onClick={() => {

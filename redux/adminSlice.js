@@ -1,34 +1,40 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  isAdmin: false,
-  isError: false,
+  username: "",
+  role: "",
+  dep: "",
+  year: "",
+  error: null,
+  loading: false,
 };
-const user = {
-  userName: "admin",
-  password: "pet019",
-};
+
 const adminSlice = createSlice({
   name: "Admin",
   initialState,
   reducers: {
     login: (state, { payload }) => {
-      const { userName, password } = payload;
-      if (userName === user.userName && password === user.password) {
-        state.isAdmin = true;
-        state.isError = false;
-      }
-      if (userName !== user.userName || password !== user.password) {
-        state.isError = true;
-      }
+      const { username, role, dep, year } = payload;
+      state.username = username;
+      state.role = role;
+      state.dep = dep;
+      state.year = year;
     },
     logout: (state) => {
-      state.isAdmin = false;
+      state.username = "";
+      state.role = "";
+      state.dep = "";
+      state.year = "";
     },
-    setError: (state) => {
-      state.isError = false;
+    setLoading: (state, { payload }) => {
+      const { isLoading } = payload;
+      state.loading = isLoading;
+    },
+    setError: (state, { payload }) => {
+      const { err } = payload;
+      state.error = err;
     },
   },
 });
 export default adminSlice.reducer;
-export const { login, logout, setError } = adminSlice.actions;
+export const { login, logout, setError, setLoading } = adminSlice.actions;

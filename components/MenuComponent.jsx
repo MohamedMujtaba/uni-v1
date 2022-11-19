@@ -17,11 +17,13 @@ const MenuComponent = ({
   setSelect,
   colorSchema,
   w = "",
+  disabled = false,
 }) => {
   return (
     <>
       <Menu>
         <MenuButton
+          disabled={disabled}
           w={w}
           as={Button}
           colorScheme={colorSchema}
@@ -30,7 +32,10 @@ const MenuComponent = ({
           {select ? select : title}
         </MenuButton>
         <MenuList w={w} maxH="200px" overflowY="scroll">
-          <MenuOptionGroup onChange={(value) => setSelect(value)}>
+          <MenuOptionGroup
+            value={select}
+            onChange={(value) => setSelect(value)}
+          >
             {options.map((i, index) => {
               return (
                 <MenuItemOption key={index.toString()} value={i}>
