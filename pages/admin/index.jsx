@@ -85,7 +85,12 @@ const Index = () => {
       y = yearL;
       d = depL;
     }
-    let c = codes.toString();
+    let c;
+    if (!codes) {
+      c = "";
+    } else {
+      c = codes;
+    }
     try {
       const res = await axios.get(
         `https://uni-api-v1.vercel.app/api/v1/lecture?title=${title}&hall=${hall}&date=${date}&time=${time}&dep=${d}&year=${y}&sort=time&codes=${c}`
@@ -96,7 +101,7 @@ const Index = () => {
     } catch (error) {
       console.log(error);
     }
-  }, [date, dep, depL, hall, role, time, title, year, yearL]);
+  }, [codes, date, dep, depL, hall, role, time, title, year, yearL]);
 
   const handleDelete = async () => {
     try {
