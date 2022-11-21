@@ -31,6 +31,7 @@ import MenuComponent from "./MenuComponent";
 
 const ModalComponent = ({ refresh }) => {
   const [title, setTitle] = useState("");
+  const [code, setCode] = useState("");
   const [hall, setHall] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
@@ -57,6 +58,7 @@ const ModalComponent = ({ refresh }) => {
     try {
       await axios.post("https://uni-api-v1.vercel.app/api/v1/lecture", {
         title,
+        code,
         hall,
         date,
         time,
@@ -69,6 +71,7 @@ const ModalComponent = ({ refresh }) => {
       onClose();
       refresh();
       setTitle("");
+      setCode("");
       setHall("");
       setDate("");
       setTime("");
@@ -88,7 +91,7 @@ const ModalComponent = ({ refresh }) => {
     }
   };
   const Val = () => {
-    if (!title || !date || !time || !hall) {
+    if (!title || !date || !time || !hall || !code) {
       return true;
     } else {
       return false;
@@ -113,6 +116,15 @@ const ModalComponent = ({ refresh }) => {
                 placeholder="Title"
                 type="text"
                 onChange={(e) => setTitle(e.target.value)}
+              />
+            </InputGroup>
+            {/* code */}
+            <InputGroup flexDirection="column">
+              <FormLabel>Lecture Code</FormLabel>
+              <Input
+                placeholder="Code"
+                type="text"
+                onChange={(e) => setCode(e.target.value)}
               />
             </InputGroup>
             <InputGroup flexDirection="column">

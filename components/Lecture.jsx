@@ -9,6 +9,7 @@ import {
   IconButton,
   shouldForwardProp,
   Text,
+  VStack,
 } from "@chakra-ui/react";
 import { isValidMotionProp, motion } from "framer-motion";
 import React from "react";
@@ -81,7 +82,14 @@ const Lecture = ({ i, setNote, onOpen }) => {
           Height="120px"
         >
           <Text>{i.time}</Text>
-          <Text>{i.title}</Text>
+          <VStack alignItems="end">
+            <Text textAlign="right" mb={2}>
+              {i.title}
+            </Text>
+            <Text textAlign="right" fontSize="xs" as="sup">
+              ({i.code})
+            </Text>
+          </VStack>
         </Flex>
         <Divider />
         <Flex w="90%" justifyContent="space-between" alignItems="center">

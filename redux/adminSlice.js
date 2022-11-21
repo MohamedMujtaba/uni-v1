@@ -7,6 +7,7 @@ const initialState = {
   year: "",
   error: null,
   loading: false,
+  codes: "",
 };
 
 const adminSlice = createSlice({
@@ -14,17 +15,19 @@ const adminSlice = createSlice({
   initialState,
   reducers: {
     login: (state, { payload }) => {
-      const { username, role, dep, year } = payload;
+      const { username, role, dep, year, codes } = payload;
       state.username = username;
       state.role = role;
       state.dep = dep;
       state.year = year;
+      state.codes = codes;
     },
     logout: (state) => {
       state.username = "";
       state.role = "";
       state.dep = "";
       state.year = "";
+      state.codes = "";
     },
     setLoading: (state, { payload }) => {
       const { isLoading } = payload;

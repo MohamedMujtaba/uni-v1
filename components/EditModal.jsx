@@ -38,6 +38,7 @@ const EditModal = ({
 }) => {
   const { role, year, dep } = useSelector((state) => state.admin);
   const [title, setTitle] = useState("");
+  const [code, setCode] = useState("");
   const [hall, setHall] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
@@ -67,6 +68,7 @@ const EditModal = ({
   // };
   useEffect(() => {
     setTitle(lecture?.title);
+    setCode(lecture?.code);
     setHall(lecture?.hall);
     setDate(lecture?.date);
     setTime(lecture?.time);
@@ -93,11 +95,12 @@ const EditModal = ({
         `https://uni-api-v1.vercel.app/api/v1/lecture/${lecture._id}`,
         {
           title,
+          code,
           hall,
           date,
           time,
-          dep,
-          year,
+          dep: d,
+          year: y,
           status,
           note,
         }
@@ -107,6 +110,7 @@ const EditModal = ({
       onClose();
       refresh();
       setTitle("");
+      setCode("");
       setHall("");
       setDate("");
       setTime("");
@@ -129,7 +133,7 @@ const EditModal = ({
     }
   };
   const Val = () => {
-    if (!title || !date || !time || !hall) {
+    if (!title || !date || !time || !hall || !code) {
       return true;
     } else {
       return false;
@@ -139,7 +143,7 @@ const EditModal = ({
     if (!isOpen) {
       setLecture(null);
     }
-  }, [isOpen]);
+  }, [isOpen, setLecture]);
   return (
     <>
       {/* <IconButton onClick={onOpen} icon={<AddIcon />} colorScheme="teal" /> */}
@@ -156,6 +160,15 @@ const EditModal = ({
                 placeholder="Title"
                 type="text"
                 onChange={(e) => setTitle(e.target.value)}
+              />
+            </InputGroup>
+            <InputGroup flexDirection="column">
+              <FormLabel>Lecture Code</FormLabel>
+              <Input
+                value={code}
+                placeholder="Code"
+                type="text"
+                onChange={(e) => setCode(e.target.value)}
               />
             </InputGroup>
             <InputGroup flexDirection="column">

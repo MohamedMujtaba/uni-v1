@@ -35,9 +35,7 @@ import { login, setError, setLoading } from "../../redux/adminSlice";
 const App = () => {
   const [userName, setUserName] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const { username, role, dep, year, error, loading } = useSelector(
-    (state) => state.admin
-  );
+  const { error, loading } = useSelector((state) => state.admin);
   const dispatch = useDispatch();
   const router = useRouter();
   // const toast = useToast();
@@ -52,13 +50,14 @@ const App = () => {
         }
       );
       if (data) {
-        const { username, role, dep, year } = data.data.user;
+        const { username, role, dep, year, codes } = data.data.user;
         dispatch(
           login({
             username,
             role,
             dep,
             year,
+            codes,
           })
         );
         dispatch(setLoading({ isLoading: false }));

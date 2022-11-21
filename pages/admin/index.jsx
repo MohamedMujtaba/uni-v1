@@ -48,15 +48,15 @@ import EditModal from "../../components/EditModal";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 const Index = () => {
-  const { role, year, dep } = useSelector((state) => state.admin);
+  const { role, year, dep, codes } = useSelector((state) => state.admin);
   const [lectures, setLectures] = useState([]);
   const [lecture, setLecture] = useState(null);
   const [title, setTitle] = useState("");
   const [hall, setHall] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
-  const [depL, setDepL] = useState(dep);
-  const [yearL, setYearL] = useState(year);
+  const [depL, setDepL] = useState("");
+  const [yearL, setYearL] = useState("");
   const [deleteArr, setDeleteArr] = useState([]);
   const [s, setS] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -85,11 +85,11 @@ const Index = () => {
       y = yearL;
       d = depL;
     }
+    let c = codes.toString();
     try {
-      console.log({ y, d });
       const res = await axios.get(
-        `https://uni-api-v1.vercel.app/api/v1/lecture?title=${title}&hall=${hall}&date=${date}&time=${time}&dep=${d}&year=${y}&sort=time`
-        // `http://localhost:5000/api/v1/lecture?title=${title}&hall=${hall}&date=${date}&time=${time}&dep=${d}&year=${y}&sort=time,day`
+        `https://uni-api-v1.vercel.app/api/v1/lecture?title=${title}&hall=${hall}&date=${date}&time=${time}&dep=${d}&year=${y}&sort=time&codes=${c}`
+        // `http://localhost:5000/api/v1/lecture?title=${title}&hall=${hall}&date=${date}&time=${time}&dep=${d}&year=${y}&sort=time&codes=${c}`
       );
       setLectures(res.data.lectures);
       console.log(res.data);
